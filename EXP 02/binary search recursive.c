@@ -2,15 +2,16 @@
 #include <stdlib.h>
 #include <time.h>
 
-void binary_search(int A[], int key, int imin, int imax) {
+void binary_search(int A[], int key, int imin, int imax, int *iterations) {
     if (imax < imin) {
         printf("KEY NOT FOUND");
     } else {
         int imid = (imin + imax) / 2;
+        (*iterations)++; 
         if (A[imid] < key) {
-            binary_search(A, key, imid + 1, imax);
+            binary_search(A, key, imid + 1, imax, iterations);
         } else if (A[imid] > key) {
-            binary_search(A, key, imin, imid - 1);
+            binary_search(A, key, imin, imid - 1, iterations);
         } else {
             printf("\nKEY %d FOUND AT %d position", A[imid], imid);
         }
@@ -36,11 +37,13 @@ int main() {
     scanf("%d", &value);
 
     l1 = clock();
-    binary_search(arr, value, 0, n - 1);
+    int iterations = 0;
+    binary_search(arr, value, 0, n - 1, &iterations);
     l2 = clock();
 
     double t1 = ((double)(l2 - l1)) / CLOCKS_PER_SEC;
     printf("TIME : %f \n", t1);
+    printf("Number of iterations: %d\n", iterations);
 
     return 0;
 }
